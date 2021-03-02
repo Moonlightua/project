@@ -20,8 +20,7 @@
         "drupal/adminimal_admin_toolbar": "^1.11",
         "drupal/core-composer-scaffold": "^8.8",
         "drupal/core-project-message": "^8.8",
-        "drupal/core-recommended": "^8.8",
-        "drush/drush": "^10.3"
+        "drupal/core-recommended": "^8.8"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -84,5 +83,8 @@
                 "      composer remove drupal/core-project-message"
             ]
         }
+    },
+    "require-dev": {
+        "drush/drush": "^10.4"
     }
 }
