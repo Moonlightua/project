@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c240841b1471fdc6ed9accb848d8e7e",
+    "content-hash": "70fd613011473e6bfeab5f35429337ba",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -829,6 +829,64 @@
             }
         },
         {
+            "name": "drupal/bootstrap",
+            "version": "3.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/bootstrap.git",
+                "reference": "8.x-3.23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/bootstrap-8.x-3.23.zip",
+                "reference": "8.x-3.23",
+                "shasum": "9849be667cc678a91ad29f77c2baea2cf16878bc"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-theme",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-3.23",
+                    "datestamp": "1592175762",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Carver (markcarver)",
+                    "homepage": "https://www.drupal.org/u/markcarver",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "John McCormick (neardark)",
+                    "homepage": "https://www.drupal.org/u/neardark",
+                    "role": "Co-maintainer"
+                },
+                {
+                    "name": "Fabiano Sant'Ana (wundo)",
+                    "homepage": "https://www.drupal.org/u/wundo",
+                    "role": "Co-maintainer"
+                }
+            ],
+            "description": "Built to use Bootstrap, a sleek, intuitive, and powerful front-end framework for faster and easier web development.",
+            "homepage": "https://www.drupal.org/project/bootstrap",
+            "support": {
+                "source": "https://git.drupalcode.org/project/bootstrap",
+                "docs": "https://drupal-bootstrap.org",
+                "issues": "https://www.drupal.org/project/issues/bootstrap",
+                "irc": "irc://irc.freenode.org/drupal-bootstrap"
+            }
+        },
+        {
             "name": "drupal/core",
             "version": "8.9.13",
             "source": {
@@ -1237,6 +1295,51 @@
                 "source": "https://github.com/drupal/core-recommended/tree/8.9.13"
             },
             "time": "2021-01-19T23:11:00+00:00"
+        },
+        {
+            "name": "drupal/glisseo",
+            "version": "1.0.0-alpha15",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/glisseo.git",
+                "reference": "8.x-1.0-alpha15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/glisseo-8.x-1.0-alpha15.zip",
+                "reference": "8.x-1.0-alpha15",
+                "shasum": "1a03cb79cbfa7acf80486816e3faadb78083e525"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-theme",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-alpha15",
+                    "datestamp": "1578913387",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Malyshev (niklan)",
+                    "homepage": "https://niklan.net"
+                }
+            ],
+            "description": "Base theme with simple starter theme.",
+            "homepage": "https://www.drupal.org/project/glisseo",
+            "support": {
+                "source": "https://git.drupalcode.org/project/glisseo",
+                "issues": "https://www.drupal.org/project/issues/glisseo"
+            }
         },
         {
             "name": "easyrdf/easyrdf",
@@ -6339,7 +6442,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "drupal/glisseo": 15
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
