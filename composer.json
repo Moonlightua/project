@@ -24,6 +24,7 @@
         "drupal/core-recommended": "^8.8",
         "drupal/glisseo": "^1.0@alpha",
         "drupal/pathauto": "^1.8",
+        "drupal/video_embed_field": "^2.4",
         "drupal/views_slideshow": "^4.8"
     },
     "conflict": {

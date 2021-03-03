@@ -97,7 +97,7 @@
   <div role="main" class="main-container {{ container }} js-quickedit-main-content">
     <div class="row">
 
-    
+
 
       {# Content #}
       {%
@@ -121,8 +121,14 @@
         {% block content %}
           <a id="main-content"></a>
           {{ page.content }}
+          {% block content_second %}
+          <div class="content_second_col">
+            {{ page.content_second }}
+          </div>
+            {% endblock %}
         {% endblock %}
       </section>
+
 
       {# Sidebar Second #}
       {% if page.sidebar_second %}
@@ -135,7 +141,7 @@
     </div>
   </div>
 {% endblock %}
-
+<div class="clear"></div>
 {% if page.footer %}
   {% block footer %}
     <footer class="footer {{ container }}" role="contentinfo">
