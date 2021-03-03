@@ -1,7 +1,9 @@
 framework:
   css:
     theme:
-      css/style.css: {}
+      css/header-footer.css: {}
+      css/node.css: {}
+      css/main_page_content.css: {}
 
 # Uncomment for LESS source JavaScript files.
 #  js:

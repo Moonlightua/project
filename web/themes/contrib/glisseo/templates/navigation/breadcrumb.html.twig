@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Theme override for a breadcrumb trail.
+ *
+ * @see template_preprocess_breadcrumb().
+ */
+#}
+{% if breadcrumb %}
+  <nav{{ attributes.addClass(bem_classes) }}>
+    <h2 class="visually-hidden">{{ 'Breadcrumb'|t }}</h2>
+    {% spaceless %}
+      {% if breadcrumb|length > 1 %}
+        <div class="{{ bem_block }}__path">
+          {% for item in breadcrumb %}
+            {% if not loop.last %}
+              {% if item.url %}
+                <a href="{{ item.url }}" class="{{ bem_block }}__item-link">{{ item.text }}</a>
+                <span class="{{ bem_block }}__delimiter"></span>
+              {% else %}
+                <span class="{{ bem_block }}__item-link {{ bem_block }}__item-link--text">{{ item.text }}</span>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="{{ bem_block }}__current">
+        {% set last = breadcrumb|last %}
+        {% if last.url %}
+          <a href="{{ last.url }}" class="{{ bem_block }}__item-link {{ bem_block }}__item-link--current">{{ last.text }}</a>
+        {% else %}
+          <span class="{{ bem_block }}__item-link {{ bem_block }}__item-link--text {{ bem_block }}__item-link--current">{{ last.text }}</span>
+        {% endif %}
+      </div>
+    {% endspaceless %}
+  </nav>
+{% endif %}

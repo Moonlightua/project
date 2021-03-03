@@ -1,0 +1,29 @@
+// =============================================================================
+// Drupal messenger messages.
+// =============================================================================
+
+:root {
+  --message-background: transparent;
+  --message-color: var(--text-color);
+}
+
+.messages {
+  position: relative;
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius);
+  background: var(--message-background);
+  color: var(--message-color);
+}
+
+.messages--error {
+  --message-background: #ff9e80;
+}
+
+.messages--status {
+  --message-background: #ccff90;
+}
+
+.messages--warning {
+  --message-background: #ffe57f;
+}

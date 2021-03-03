@@ -1,0 +1,558 @@
+<?php
+
+/**
+ * @file
+ * Custom hooks and functions special for theme.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function glisseo_theme_registry_alter(array &$theme_registry) {
+  // Those variables will be added to all templates so you can use them outside
+  // theme as well. E.g. in custom module hook_theme() without need to declare
+  // them in hook.
+  $extra_variables = [
+    'bem_block' => NULL,
+    'bem_modifiers' => [],
+    'bem_classes' => NULL,
+  ];
+  foreach ($theme_registry as $hook_name => &$hook) {
+    // Added to every hook custom preprocess function which will be called the
+    // latest. It processing three variables above before it send to template.
+    $hook['preprocess functions'][] = '_glisseo_bem_preprocess';
+
+    if (isset($theme_registry[$hook_name]['variables'])) {
+      $hook['variables'] += $extra_variables;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function glisseo_preprocess(&$variables, $hook) {
+  // If BEM block is not set, try to generate default. For more information
+  // @see _glisseo_get_bem_block_default().
+  $variables['bem_block'] = isset($variables['bem_block']) ? $variables['bem_block'] : _glisseo_get_bem_block_default($variables);
+  // Values from this array will be set as BEM Modifiers to bem_block:
+  // [bem_block]--[bem_modifier_item]. By default, values from this variable
+  // will be merged with modifiers from template.
+  $variables['bem_modifiers'] = isset($variables['bem_modifiers']) ? $variables['bem_modifiers'] : [];
+  // Create variable for storing processed classes.
+  $variables['bem_classes'] = isset($variables['bem_classes']) ? $variables['bem_classes'] : [];
+  // We also allows to pass modifiers with render array itself where it's
+  // possible.
+  foreach (['element', 'elements', 'form'] as $render_element_key) {
+    if (isset($variables[$render_element_key]) && isset($variables[$render_element_key]['#bem_modifiers']) && !empty($variables[$render_element_key]['#bem_modifiers'])) {
+      $variables['bem_modifiers'] = $variables[$render_element_key]['#bem_modifiers'];
+      unset($variables[$render_element_key]['#bem_modifiers']);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig.
+ */
+function glisseo_preprocess_page(array &$variables) {
+  // Adds empty Attribute object for main element.
+  $main_layout_attributes = new Attribute();
+  $variables['main_layout_attributes'] = $main_layout_attributes;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for block.html.twig.
+ */
+function glisseo_preprocess_block(array &$variables) {
+  $elements = $variables['elements'];
+  $variables['bem_block'] = 'block';
+
+  // Block ID used for generate BEM class "block--[block_id]".
+  // If this block used in layout, we handle it a bit different for more
+  // clean classes.
+  if (in_array($elements['#base_plugin_id'], [
+    'extra_field_block',
+    'field_block',
+  ])) {
+    $variables['block_id'] = str_replace(':', '-', $elements['#derivative_plugin_id']);
+  }
+  elseif (!empty($elements['#id'])) {
+    $variables['block_id'] = $elements['#id'];
+  }
+  elseif (!empty($elements['#derivative_plugin_id'])) {
+    // Programatically called plugins will not have id.
+    $variables['block_id'] = $elements['#derivative_plugin_id'];
+  }
+  else {
+    $variables['block_id'] = $elements['#base_plugin_id'];
+  }
+  $variables['bem_modifiers'][] = Html::getClass($variables['block_id']);
+
+  if ($variables['base_plugin_id'] == 'block_content') {
+    /** @var \Drupal\block_content\Entity\BlockContent $block_content */
+    $block_content = $variables['content']['#block_content'];
+    $variables['block_content_bundle'] = $block_content->bundle();
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * This hook add new theme hook suggestion for taxonomy terms:
+ *  - taxonomy-term--VIEW.html.twig.
+ *  - taxonomy-term--TYPE--VIEW.html.twig.
+ *  - taxonomy-term--TID--VIEW.html.twig.
+ */
+function glisseo_theme_suggestions_taxonomy_term_alter(array &$suggestions, $variables, $hook) {
+  $taxonomy_term = $variables['elements']['#taxonomy_term'];
+  $view_mode = $variables['elements']['#view_mode'];
+  array_unshift($suggestions, 'taxonomy_term__' . $view_mode);
+  // Theme suggestion taxonomy-term--TYPE--VIEW must be inserted right after
+  // default suggestion taxonomy-term--TYPE.
+  foreach ($suggestions as $key => $suggestion) {
+    if ($suggestion == 'taxonomy_term__' . $taxonomy_term->bundle()) {
+      array_splice($suggestions, $key + 1, 0, 'taxonomy_term__' . $taxonomy_term->bundle() . '__' . $view_mode);
+      break;
+    }
+  }
+  $suggestions[] = 'taxonomy_term__' . $taxonomy_term->id() . '__' . $view_mode;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * This hook add new theme hook suggestion for paragraphs:
+ *  - paragraph--{ID}--{VIEW_MODE}.html.twig
+ *  - paragraph--{ID}.html.twig
+ */
+function glisseo_theme_suggestions_paragraph_alter(array &$suggestion, $variables, $hook) {
+  $paragraph = $variables['elements']['#paragraph'];
+  $view_mode = $variables['elements']['#view_mode'];
+  $suggestion[] = 'paragraph__' . $paragraph->id();
+  $suggestion[] = 'paragraph__' . $paragraph->id() . '__' . $view_mode;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Add new theme hook suggestion by block content type.
+ *  - block--{BLOCK_TYPE}.html.twig
+ */
+function glisseo_theme_suggestions_block_alter(array &$suggestions, $variables, $hook) {
+  if (isset($variables['elements']['content']['#block_content'])) {
+    array_splice($suggestions, 1, 0, 'block__bundle__' . $variables['elements']['content']['#block_content']->bundle());
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for 'comment.html.twig'.
+ */
+function glisseo_preprocess_comment(array &$variables) {
+  /** @var \Drupal\comment\CommentInterface $comment */
+  $comment = $variables['elements']['#comment'];
+  $variables['bem_block'] = _glisseo_get_bem_block_for_entity($comment, $variables['elements']['#view_mode']);
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Add new theme hook suggestion to comment type.
+ *  - comment--{BUNDLE}--{VIEW_MODE}.html.twig
+ */
+function glisseo_theme_suggestions_comment_alter(array &$suggestions, array $variables) {
+  $elements = $variables['elements'];
+  $comment = $elements['#comment'];
+  $view_mode = $elements['#view_mode'];
+  $bundle = $comment->bundle();
+  $suggestions[] = 'comment__' . $bundle . '__' . $view_mode;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Adds new theme hook suggestion to user entity.
+ *  - user--{VIEW_MODE}.html.twig.
+ */
+function glisseo_theme_suggestions_user_alter(array &$suggestions, array $variables) {
+  $suggestion = [
+    'user',
+    $variables['elements']['#view_mode'],
+  ];
+  $suggestions[] = implode('__', $suggestion);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function glisseo_preprocess_field(&$variables) {
+  $element = $variables['element'];
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $element['#object'];
+  $field_name = $element['#field_name'];
+
+  $variables['entity_type'] = $element['#entity_type'];
+  $variables['bundle'] = $element['#bundle'];
+  $variables['view_mode'] = $element['#view_mode'];
+
+  // Fix for block view mode. Block template by default has 'full' view mode,
+  // but inside it field will get default, this will break BEM model and we fix
+  // it.
+  if ($variables['entity_type'] == 'block_content' && $variables['view_mode'] == 'default') {
+    $variables['view_mode'] = 'full';
+  }
+
+  // Sometimes view_mode can be missed and we set it to default.
+  // e.g. paragraphs_library_item entity.
+  if (strlen($variables['view_mode']) == 0) {
+    $variables['view_mode'] = 'default';
+  }
+
+  $bem_block_pieces = [
+    // Without view mode. We add it as modifier to let field has same styles
+    // across view modes.
+    _glisseo_get_bem_block_for_entity($entity),
+    $field_name,
+  ];
+  $variables['bem_block'] = Html::getClass(implode('-', $bem_block_pieces));
+  if ($variables['view_mode'] != 'default') {
+    $variables['bem_modifiers'][] = Html::getClass($variables['view_mode']);
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Adds new theme suggestions for fields.
+ *  - field--{ENTITY}--{BUNDLE}--{FIELD_NAME}--{ENTITY_ID}.html.twig
+ *  - field--{ENTITY}--{BUNDLE}--{FIELD_NAME}--{VIEW_MODE}.html.twig
+ */
+function glisseo_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  $entity = $variables['element']['#object'];
+  $suggestion_name = [
+    'field',
+    $variables['element']['#entity_type'],
+    $variables['element']['#bundle'],
+    $variables['element']['#field_name'],
+    $variables['element']['#view_mode'],
+  ];
+  $suggestions[] = implode('__', $suggestion_name);
+
+  $suggestion_name = [
+    'field',
+    $variables['element']['#entity_type'],
+    $variables['element']['#bundle'],
+    $variables['element']['#field_name'],
+    $entity->id(),
+  ];
+  $suggestions[] = implode('__', $suggestion_name);
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Adds ability to customize inputs hook suggestions. Very useful to add it to
+ * input of "Add to cart" and create button from it.
+ */
+function glisseo_theme_suggestions_input_alter(array &$suggestions, array $variables) {
+  $element = &$variables['element'];
+
+  if (isset($element['#attributes']['data-hook-suggestion'])) {
+    $suggestion = str_replace('-', '_', $element['#attributes']['data-hook-suggestion']);
+    $suggestions[] = 'input__' . $element['#type'] . '__' . $suggestion;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for details.html.twig.
+ */
+function glisseo_preprocess_details(array &$variables) {
+  $element = &$variables['element'];
+
+  $variables['form_id'] = isset($element['#bem_form_id']) ? $element['#bem_form_id'] : '';
+  $variables['name'] = isset($element['#id']) ? preg_replace([
+    '/^edit\-/',
+    '/\-\d+$/',
+  ], '', $element['#id']) : '';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for form-element.html.twig.
+ */
+function glisseo_preprocess_form_element(array &$variables) {
+  $element = &$variables['element'];
+
+  $variables['form_id'] = isset($element['#bem_form_id']) ? $element['#bem_form_id'] : '';
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Add additional processing for some elements.
+ */
+function glisseo_element_info_alter(array &$types) {
+  foreach ($types as $name => $type) {
+    if (isset($type['#theme_wrappers']) && in_array('form_element', $type['#theme_wrappers'])) {
+      $types[$name]['#process'][] = '_glisseo_process_form_element';
+    }
+    if (isset($type['#theme_wrappers']) && in_array('details', $type['#theme_wrappers'])) {
+      $types[$name]['#process'][] = '_glisseo_process_form_element';
+    }
+    if (isset($type['#theme_wrappers']) && in_array('fieldset', $type['#theme_wrappers'])) {
+      $types[$name]['#process'][] = '_glisseo_process_form_element';
+    }
+  }
+}
+
+/**
+ * Additional processing for specific form elements.
+ */
+function _glisseo_process_form_element(array &$element, FormStateInterface $form_state, &$complete_form) {
+  if (!empty($complete_form['#form_id'])) {
+    // Add additional variable to element to determine parent form id.
+    $element['#bem_form_id'] = $complete_form['#form_id'];
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for form.html.twig.
+ */
+function glisseo_preprocess_form(array &$variables) {
+  $element = &$variables['element'];
+  // This element contains form_id and base_form_id.
+  $variables['bem_modifiers'] = $element['#theme'];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for input.html.twig.
+ */
+function glisseo_preprocess_input(array &$variables) {
+  $element = $variables['element'];
+  // Elements which doesn't need class ".form-control.".
+  $blacklist = ['checkbox', 'radio', 'submit'];
+
+  if (!in_array($element['#type'], $blacklist)) {
+    $variables['attributes']['class'][] = 'form-control';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for textarea.html.twig.
+ */
+function glisseo_preprocess_textarea(array &$variables) {
+  $variables['attributes']['class'][] = 'form-control';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for select.html.twig.
+ */
+function glisseo_preprocess_select(array &$variables) {
+  $variables['attributes']['class'][] = 'form-control';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-action.html.twig.
+ */
+function glisseo_preprocess_menu_local_action(array &$variables) {
+  $classes = &$variables['link']['#options']['attributes']['class'];
+  foreach ($classes as &$class) {
+    if ($class == 'button-action') {
+      $class = 'button--action';
+    }
+  }
+  $classes[] = 'local-actions__link';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-task.html.twig.
+ */
+function glisseo_preprocess_menu_local_task(array &$variables) {
+  $classes = &$variables['link']['#options']['attributes']['class'];
+  $classes[] = 'tabs__link';
+
+  if (!empty($variables['element']['#active'])) {
+    $classes[] = 'tabs__link--active';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for 'menu.html.twig'.
+ */
+function glisseo_preprocess_menu(array &$variables) {
+  $variables['bem_block'] = 'menu';
+
+  if (isset($variables['menu_name'])) {
+    $variables['bem_modifiers'][] = $variables['menu_name'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() links.html.twig.
+ */
+function glisseo_preprocess_links(array &$variables) {
+  $attributes = &$variables['attributes'];
+
+  // Improve BEM block classes.
+  foreach ($attributes['class'] as &$class) {
+    if ($class == 'inline') {
+      $class = 'links--inline';
+    }
+  }
+
+  // Improve list item BEM classes.
+  foreach ($variables['links'] as &$link) {
+    /** @var \Drupal\Core\Template\Attribute $list_item_attributes */
+    $list_item_attributes = &$link['attributes'];
+    if (in_array('class', array_keys($list_item_attributes->toArray()))) {
+      $list_item_classes = $list_item_attributes->toArray()['class'];
+
+      foreach ($list_item_classes as $list_item_class) {
+        $list_item_attributes->removeClass($list_item_class);
+        $list_item_attributes->addClass('links__item');
+        $list_item_attributes->addClass('links__item--' . $list_item_class);
+      }
+    }
+  }
+
+  // Improve list <a> BEM classes.
+  foreach ($variables['links'] as &$link) {
+    $link['link']['#options']['attributes']['class'][] = 'links__item-link';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for user.html.twig.
+ */
+function glisseo_preprocess_user(array &$variables) {
+  if (isset($variables['elements']['#view_mode'])) {
+    $variables['view_mode'] = $variables['elements']['#view_mode'];
+  }
+  else {
+    $variables['view_mode'] = 'default';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for 'breadcrumb.html.twig'.
+ */
+function glisseo_preprocess_breadcrumb(array &$variables) {
+  if (count($variables['links']) == 1) {
+    $variables['bem_modifiers'][] = 'single-item';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for 'region.html.twig'.
+ */
+function glisseo_preprocess_region(array &$variables) {
+  if (isset($variables['region'])) {
+    $variables['bem_modifiers'][] = Html::getClass($variables['region']);
+  }
+}
+
+/**
+ * The final preprocess for all theme hooks.
+ *
+ * This function is actually implementation of hook_preprocess_HOOK(), but
+ * added manually as the last preprocessor.
+ */
+function _glisseo_bem_preprocess(array &$variables) {
+  // Skip if our variables is not presented.
+  if (!isset($variables['bem_block']) || !isset($variables['bem_modifiers'])) {
+    return;
+  }
+
+  $bem_block = $variables['bem_block'];
+  $bem_modifiers = $variables['bem_modifiers'];
+  $bem_classes = &$variables['bem_classes'];
+  // Add block class.
+  if (!in_array($bem_block, $bem_classes)) {
+    $bem_classes[] = $bem_block;
+  }
+  foreach ($bem_modifiers as $bem_modifier) {
+    $bem_class = "{$bem_block}--{$bem_modifier}";
+    // If it set before, we don't need to duplicate it.
+    if (!in_array($bem_class, $bem_classes)) {
+      $bem_classes[] = $bem_class;
+    }
+  }
+}
+
+/**
+ * Gets BEM Block for provided antity and view mode.
+ *
+ * The Block name will be:
+ * <bem-block> ::= <entity-type-id>
+ *               | <entity-type-id> "-" <entity-bundle>
+ *               | <entity-type-id> "-" <view-mode>
+ *               | <entity-type-id> "-" <entity-bundle> "-" <view-mode>
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity.
+ * @param string|NULL $view_mode
+ *   The view mode, is it must be included in Block name.
+ *
+ * @return string
+ *   The ready to use bem block class name.
+ */
+function _glisseo_get_bem_block_for_entity(EntityInterface $entity, string $view_mode = NULL) {
+  $block_pieces = [
+    $entity->getEntityTypeId(),
+  ];
+
+  // If entity is not support types, such as 'user' entity, we don't need to
+  // include 'bundle' into block name, it will be the same as entity name and
+  // just duplicate it.
+  if ($entity->getEntityType()->getBundleEntityType()) {
+    $block_pieces[] = $entity->bundle();
+  }
+
+  // If view mode is 'default', we don't add it to BEM Block.
+  if ($view_mode && $view_mode != 'default') {
+    // Additionally process view mode name and remove leading underscore from
+    // it, because it may presents from modules such as Layout Builder
+    // (_custom).
+    $block_pieces[] = ltrim($view_mode, '_');
+  }
+
+  return Html::getClass(implode('-', $block_pieces));
+}
+
+/**
+ * Generates default BEM Block for all theme hooks.
+ *
+ * @param array $variables
+ *   The variables.
+ *
+ * @return string
+ *   The generated block.
+ */
+function _glisseo_get_bem_block_default(array $variables) {
+  $original_hook = $variables['theme_hook_original'];
+  $block_pieces = [
+    $original_hook,
+  ];
+
+  if (isset($variables['elements'])) {
+    $elements = $variables['elements'];
+
+    // If set view_mode, this is probably an entity.
+    if (isset($elements['#view_mode'])) {
+      if (isset($elements["#{$original_hook}"]) && $elements["#{$original_hook}"] instanceof EntityInterface) {
+        /** @var \Drupal\Core\Entity\EntityInterface $entity */
+        $entity = $elements["#{$original_hook}"];
+
+        // If this is an entity, we return result.
+        return _glisseo_get_bem_block_for_entity($entity, $elements['#view_mode']);
+      }
+    }
+  }
+
+  return Html::getClass(implode('-', $block_pieces));
+}

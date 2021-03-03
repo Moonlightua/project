@@ -1,0 +1,58 @@
+{%
+  set bem_classes = bem_classes|merge([
+    node.isPromoted() ? bem_block ~ '--promoted',
+    node.isSticky() ? bem_block ~ '--sticky',
+    not node.isPublished() ? bem_block ~ '--unpublished',
+  ])
+%}
+{%
+  set title_classes = [
+    bem_block ~ '__label',
+    label_hidden ? 'visually-hidden',
+  ]
+%}
+<article{{ attributes.addClass(bem_classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  {% block node %}
+
+    {% if display_submitted %}
+      <header class="{{ bem_block }}__header">
+        {% block header %}
+
+          {% if not page %}
+            <h2{{ title_attributes.addClass(bem_block ~ '__title') }}>
+              {% block title %}
+                <a class="{{ bem_block }}__link" href="{{ url }}" rel="bookmark">{{ label }}</a>
+              {% endblock %}
+            </h2>
+          {% endif %}
+
+          <div{{ author_attributes.addClass(bem_block ~ '__submitted') }}>
+            {% block submitted %}
+              {{ date }}
+              {{ metadata }}
+            {% endblock %}
+          </div>
+
+        {% endblock %}
+      </header>
+    {% endif %}
+
+    <div{{ content_attributes.addClass(bem_block ~ '__content') }}>
+      {% block content %}
+        {{ content|without('links') }}
+      {% endblock %}
+    </div>
+
+    {% if content.links %}
+      <div class="{{ bem_block }}__links">
+        {% block links %}
+          {{ content.links }}
+        {% endblock %}
+      </div>
+    {% endif %}
+
+  {% endblock node %}
+</article>

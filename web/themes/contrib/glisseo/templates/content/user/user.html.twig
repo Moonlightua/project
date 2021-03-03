@@ -1,0 +1,14 @@
+{%
+  set bem_classes = bem_classes|merge([
+    user.isBlocked() ? bem_block ~ '--blocked',
+  ])
+%}
+<article{{ attributes.addClass(bem_classes) }}>
+  {% block user %}
+    {% if content %}
+      {% block content %}
+        {{- content -}}
+      {% endblock %}
+    {% endif %}
+  {% endblock user %}
+</article>

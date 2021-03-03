@@ -13,7 +13,6 @@ regions:
   header: 'Top Bar'
   help: 'Help'
   content: 'Content'
-  sidebar_second: 'Secondary'
   footer: 'Footer'
   page_top: 'Page top'
   page_bottom: 'Page bottom'

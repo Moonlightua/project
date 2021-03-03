@@ -1,0 +1,11 @@
+<div{{ attributes.addClass(bem_classes) }}>
+  {% block paragraph %}
+
+    <div class="{{ bem_block }}__content">
+      {% block content %}
+        {{ content }}
+      {% endblock %}
+    </div>
+
+  {% endblock paragraph %}
+</div>

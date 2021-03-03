@@ -1,0 +1,10 @@
+<article{{ attributes.addClass(bem_classes) }}>
+  {% block commerce_product %}
+    {{ title_prefix }}
+    {{ title_suffix }}
+
+    {% block content %}
+      {{- product|without('variation_attributes') -}}
+    {% endblock content %}
+  {% endblock commerce_product %}
+</article>

@@ -1,0 +1,65 @@
+// =============================================================================
+// Drupal breadcrumb.
+// =============================================================================
+
+.breadcrumb {
+  font-size: var(--text-sm);
+  display: flex;
+}
+
+.breadcrumb__path {
+  display: block;
+  overflow: hidden;
+  flex-grow: 0;
+  flex-shrink: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @media (--sm) {
+    display: inline;
+  }
+}
+
+.breadcrumb__item-link {
+  --link-color: var(--color-gray-70);
+}
+
+.breadcrumb__item-link--current {
+  --link-color: var(--color-primary);
+}
+
+.breadcrumb__item-link--text {
+  color: var(--text-color);
+}
+
+.breadcrumb__current {
+  display: block;
+  flex-grow: 1;
+  flex-shrink: 0;
+
+  &::before {
+    margin: 0 var(--spacing-unit);
+    content: '/';
+    color: var(--color-gray-70);
+  }
+
+  @media (--sm) {
+    display: inline;
+  }
+}
+
+.breadcrumb--single-item .breadcrumb__current::before {
+  display: none;
+}
+
+.breadcrumb__delimiter {
+  &::after {
+    margin: 0 var(--spacing-unit);
+    content: '/';
+    color: var(--color-gray-70);
+  }
+
+  &:last-child {
+    display: none;
+  }
+}
