@@ -1,6 +1,0 @@
-# Block project files.
-.idea
-# Block system file.
-.directory
-
-yarn.lock
