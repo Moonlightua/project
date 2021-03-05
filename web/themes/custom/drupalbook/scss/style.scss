@@ -253,6 +253,7 @@ body {
 
 a {
   color: darkblue;
+
 }
 
 .main_news {
@@ -262,6 +263,8 @@ a {
 .main_news-title {
   font-size:22px;
 }
+
+// Last News block =============================================
 
 .block-views-blockmain-page-list-all-news-block-block-1 {
 
@@ -275,14 +278,32 @@ a {
     height: 610px;
     float: right;
   }
-
   .block-title {
+    background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+    display:inline-block;
+    padding-right: 10px;
+  }
+
+  .block_title_line {
     width: 46%;
     position: relative;
     top: -430px;
     left: 53%;
+    background: url("../images/box-title-down-line.gif") repeat-x left 47px;
   }
-  
+
+  .view-footer{
+    position: relative;
+    top: 192px;
+    left: 336px;
+    overflow: auto;
+    height: 610px;
+    float: right;
+    a {
+      color:red;
+    }
+  }
+
   .views-row.clearfix {
     padding-bottom:7px;
   }
@@ -291,7 +312,15 @@ a {
 
 .block-views-blockmain-page-news-block-block-1 {
   width:50%;
-  height:290px;
+  height:260px;
+
+  .views-row {
+    span {
+      color: #a3b0b8;
+      margin: 3px 0 0px 0;
+      font-size: 13px;
+    }
+  }
 }
 
 .image_table {
@@ -303,4 +332,57 @@ a {
   .views-row {
     padding-bottom:10px;
   }
+}
+
+// Block Posts ===========================================
+
+.block-views-blockmain-page-posts-block-block-1 {
+
+  width:50%;
+
+  .block-title {
+    background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+    display:inline-block;
+    padding-right: 10px;
+  }
+
+  .block_title_line {
+    background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+  }
+
+  .views-field.views-field-field-image-post {
+    width:40%;
+  }
+
+}
+
+// Block Popular ================================================
+
+.block-views-blockmain-page-popular-block-block-1 {
+  width: 45%;
+  position: relative;
+  left: 53%;
+  bottom: 492px;
+
+  .block-title {
+    background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+    display:inline-block;
+    padding-right: 10px;
+  }
+
+  .block_title_line {
+    background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+  }
+
+  .views-row {
+    padding-bottom:18px;
+  }
+
+
+}
+
+.views-field.views-field-created {
+  color: #a3b0b8;
+  margin: 3px 0 0px 0;
+  font-size: 13px;
 }
