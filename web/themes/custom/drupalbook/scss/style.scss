@@ -867,23 +867,24 @@ article {
 
 .test-social-share {
   .test-social-share-label{
-    font-size:30px;
+    font-size:22px;
   }
 
   display: flex;
   .test-social-share-links {
     display: flex;
+    padding-left:89%;
   .facebook-share  {
     display: flex;
-    width:48px;
-    height:48px;
+    width:36px;
+    height:36px;
     background: url("../images/facebook.png");
   }
 
   .twitter-share {
     display: flex;
-    width:48px;
-    height:48px;
+    width:36px;
+    height:36px;
     background: url("../images/twitter.png");
   }
 }

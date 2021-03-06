@@ -1,5 +1,5 @@
-name: Test
-description: Core module for custom code, hooks and functions.
+name: Social links
+description: Module for creating social links block for entities.
 type: module
 core: 8.x
-package: Test
+package: Social
