@@ -1,0 +1,6 @@
+name: DLOG - Article
+type: module
+description: The custom code for article
+package: dlog
+core: 8.x
+core_version_requirement: ^8 || ^9

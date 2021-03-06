@@ -10,6 +10,11 @@
 body {
   background-color:#e9eae4;
 }
+
+.col-sm-12 {
+  background-color: white;
+  padding-top:21px;
+}
 .header_top {
   display:flex;
   background-color:#ebede7;
@@ -264,125 +269,630 @@ a {
   font-size:22px;
 }
 
+.block-title {
+  color: gray;
+}
+
 // Last News block =============================================
+.region.region-content {
+  .block-views-blockmain-page-list-all-news-block-block-1 {
 
-.block-views-blockmain-page-list-all-news-block-block-1 {
+    height: 20px;
 
-  height:20px;
+    .views-view-grid.horizontal.cols-1.clearfix {
+      width: 46%;
+      position: relative;
+      top: -430px;
+      overflow: auto;
+      height: 610px;
+      float: right;
+    }
 
-  .views-view-grid.horizontal.cols-1.clearfix {
-    width: 46%;
-    position: relative;
-    top: -430px;
-    overflow: auto;
-    height: 610px;
-    float: right;
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      width: 46%;
+      position: relative;
+      top: -430px;
+      left: 53%;
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .view-footer {
+      position: relative;
+      top: 192px;
+      left: 336px;
+      overflow: auto;
+      height: 610px;
+      float: right;
+
+      a {
+        color: red;
+      }
+    }
+
+    .views-row.clearfix {
+      padding-bottom: 7px;
+    }
+
   }
-  .block-title {
-    background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
-    display:inline-block;
-    padding-right: 10px;
+
+  .block-views-blockmain-page-news-block-block-1 {
+    width: 50%;
+    height: 260px;
+
+    .views-row {
+      span {
+        color: #a3b0b8;
+        margin: 3px 0 0px 0;
+        font-size: 13px;
+      }
+    }
   }
 
-  .block_title_line {
-    width: 46%;
+  .image_table {
+    width: 32%;
+  }
+
+  .view-id-main_page_news_block.view-display-id-block_1 {
+
+    .views-row {
+      padding-bottom: 10px;
+    }
+  }
+
+  // Block Posts ===========================================
+
+  .block-views-blockmain-page-posts-block-block-1 {
+
+    width: 50%;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .views-field.views-field-field-image-post {
+      width: 40%;
+    }
+
+  }
+
+  // Block Popular ================================================
+
+  .block-views-blockmain-page-popular-block-block-1 {
+    width: 45%;
     position: relative;
-    top: -430px;
     left: 53%;
-    background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    bottom: 492px;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .views-row {
+      padding-bottom: 18px;
+    }
   }
 
-  .view-footer{
+
+  .views-field.views-field-created {
+    color: #a3b0b8;
+    margin: 3px 0 0px 0;
+    font-size: 13px;
+  }
+
+  // Block Style =====================================
+
+  .block-views-blockmain-page-style-block-block-1 {
+    margin-top: -500px;
+    width: 50%;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .views-field.views-field-field-image-style {
+      width: 32%;
+    }
+
+    .view-footer {
+      padding-left: 49%;
+
+      a {
+        color: red;
+      }
+    }
+  }
+
+  // BLock Photo ==============================================
+
+  .block-views-blockmain-page-photo-block-block-1 {
+    width: 47%;
     position: relative;
-    top: 192px;
-    left: 336px;
-    overflow: auto;
-    height: 610px;
-    float: right;
-    a {
-      color:red;
+    left: 386px;
+    bottom: 377px;
+
+    .views-field {
+      text-align: justify-all;
+    }
+
+    .img-responsive {
+      padding-bottom: 10px;
+    }
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
     }
   }
 
-  .views-row.clearfix {
-    padding-bottom:7px;
+  // Block Traveler ===================================================
+
+  .block-views-blockmain-page-travel-block-block-1 {
+    width: 50%;
+    margin-top: -380px;
+
+    .views-field.views-field-field-image-notes {
+      width: 32%;
+    }
+
+    .view-footer {
+      padding-left: 40%;
+
+      a {
+        color: red;
+      }
+    }
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
   }
 
+  // Block Media ====================================================
+
+  .block-views-blockmain-page-media-block-block-1 {
+    width: 47%;
+    position: relative;
+    left: 386px;
+    bottom: 377px;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .views-field.views-field-field-video {
+      padding-bottom: 10px;
+    }
+  }
+
+  .block-poll-recent-block {
+    width: 41%;
+    position: relative;
+    left: 386px;
+    bottom: 377px;
+    height: 86px;
+
+    .block-title {
+      font-size: 22px;
+    }
+  }
 }
 
-.block-views-blockmain-page-news-block-block-1 {
-  width:50%;
-  height:260px;
+.region.region-content-second {
 
-  .views-row {
-    span {
-      color: #a3b0b8;
-      margin: 3px 0 0px 0;
+  // Block Stream ==========================================
+  .block-views-blockmain-page-stream-block-block-1 {
+
+    width: 93%;
+
+    .block-title {
+      font-size: 20px;
+      color: gray;
+    }
+  }
+
+  // Redactor Choice Block ==============================
+  .block-views-blockmain-page-redactor-block-block-1 {
+
+    width: 93%;
+
+    .views-field.views-field-field-image-redactor {
+      width:32%;
+    }
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .view-footer {
+      text-align: right;
+
+      a {
+        color: red;
+      }
+    }
+  }
+
+  // Author Block =====================================
+  .block-views-blockmain-page-author-block-block-1 {
+    width:93%;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .views-field.views-field-user-picture {
+      width:22%;
+    }
+  }
+
+  // Pay Attention Block ===============================
+  .block-views-blockmain-page-attention-block-block-1 {
+    width: 93%;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .views-field.views-field-field-image-attention {
+      width:30%;
+    }
+
+    .view-footer {
+      text-align: right;
+
+      a {
+        color:red;
+      }
+    }
+  }
+
+  // Blokc Popular - Sidebar ========================================
+  .block-views-blockmain-page-popular-block-block-1 {
+    width: 93%;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .view-content {
+
+      .views-row {
+        padding-bottom: 8px;
+
+      }
+      a {
+        text-align: justify-all;
+      }
+
+      .views-field.views-field-created {
+        color: #a3b0b8;
+        margin: 3px 0 0px 0;
+        font-size: 13px;
+      }
+    }
+  }
+
+  // Block Last News - Sidebar =============================
+  .block-views-blockother-pages-news-block-block-1 {
+    width: 93%;
+
+    .block-title {
+      background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+      display: inline-block;
+      padding-right: 10px;
+    }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+    .view-content {
+
+      .views-row {
+        padding-bottom: 8px;
+
+      }
+      a {
+        text-align: justify-all;
+      }
+
+      .views-field.views-field-created {
+        color: #a3b0b8;
+        margin: 3px 0 0px 0;
+        font-size: 13px;
+      }
+    }
+  }
+
+  // Block Media - Sidebar ===================================
+  .block-views-blockmain-page-media-block-block-1 {
+
+    width:93%;
+    padding-bottom: 10px;
+
+    .block-title {
+    background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
+    display: inline-block;
+    padding-right: 10px;
+  }
+
+    .block_title_line {
+      background: url("../images/box-title-down-line.gif") repeat-x left 47px;
+    }
+
+  }
+}
+
+
+ // Node Display Styles ==============================
+
+article {
+
+  .author {
+    color: gray;
+    padding: 10px;
+  }
+
+  .field--type-image {
+
+    img {
+      float:left;
+      padding: 10px;
+    }
+  }
+
+  .field--type-text-with-summary {
+    padding: 10px;
+  }
+
+  .field--type-entity-reference {
+
+    .field--label {
+      color: gray;
+      font-size:13px;
+    }
+    .field--item {
       font-size: 13px;
+      display: inline;
     }
   }
+
+  .comment_title {
+    padding-top:30px;
+  }
 }
 
-.image_table {
-  width:31%;
-}
+// News Page ===============================
 
-.view-id-main_page_news_block.view-display-id-block_1 {
+.view-page-all-news-views {
 
   .views-row {
-    padding-bottom:10px;
+    padding-bottom: 20px;
+  }
+
+  .image_news_table {
+    width:20%;
+  }
+
+  .time_news_table {
+    padding-left:10px;
+    color: gray;
+    font-size:12px;
+  }
+
+  td {
+
+      padding-left: 10px;
+      text-align: justify;
+
   }
 }
 
-// Block Posts ===========================================
-
-.block-views-blockmain-page-posts-block-block-1 {
-
-  width:50%;
-
-  .block-title {
-    background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
-    display:inline-block;
-    padding-right: 10px;
-  }
-
-  .block_title_line {
-    background: url("../images/box-title-down-line.gif") repeat-x left 47px;
-  }
-
-  .views-field.views-field-field-image-post {
-    width:40%;
-  }
-
-}
-
-// Block Popular ================================================
-
-.block-views-blockmain-page-popular-block-block-1 {
-  width: 45%;
-  position: relative;
-  left: 53%;
-  bottom: 492px;
-
-  .block-title {
-    background: url("../images/box-title-down-line-upper.gif") repeat-x left 27px;
-    display:inline-block;
-    padding-right: 10px;
-  }
-
-  .block_title_line {
-    background: url("../images/box-title-down-line.gif") repeat-x left 47px;
-  }
+// Page articles =============================================
+.view-page-articles-all-views {
 
   .views-row {
-    padding-bottom:18px;
+    display: flex;
+    padding-bottom: 20px;
+  }
+  .img-responsive {
+    max-width: inherit;
+  }
+
+  .articles_content {
+    padding-left:20px;
+  }
+
+  .article_time {
+    color:gray;
+    font-size:13px;
+  }
+}
+
+// Page Videos ===================================================
+.view-page-videos-views {
+
+  .views-row {
+    padding-bottom: 20px;
+  }
+
+  .video-embed-field-provider-youtube.video-embed-field-responsive-video {
+    width: 400px;
+    height: 250px;
+  }
+
+  .views-field.views-field-title {
+    width: 400px;
+    font-size:18px;
+  }
+}
+
+// All News Page =======================================
+.view-page-all-news-views {
+
+  .views-row {
+    display: flex;
+    padding-bottom: 20px;
+  }
+  .img-responsive {
+    max-width: inherit;
+  }
+
+  .articles_content {
+    padding-left:20px;
+  }
+
+  .article_time {
+    color:gray;
+    font-size:13px;
+  }
+}
+
+// Blog Page =======================================
+
+.view-page-blog-views {
+
+  .views-row {
+    padding-bottom: 20px;
+  }
+
+  .author_name {
+    font-size:18px;
+    text-align: center;
+  }
+
+  .time {
+    color: gray;
+    font-size: 13px;
+    padding-left:10px;
+  }
+
+  span {
+    padding-left:10px;
+  }
+}
+
+.view-page-redactor-views {
+
+  .views-field-field-image-redactor {
+    width:16%;
+  }
+
+}
+
+// Page Attention ===================================
+
+.view-page-attention-view {
+
+  .views-row {
+    padding-bottom:25px;
+
+    a {
+      font-size:17px;
+    }
+
+    .time {
+      color:gray;
+      font-size:13px;
+    }
   }
 
 
 }
 
-.views-field.views-field-created {
-  color: #a3b0b8;
-  margin: 3px 0 0px 0;
-  font-size: 13px;
+.test-social-share {
+  .test-social-share-label{
+    font-size:30px;
+  }
+
+  display: flex;
+  .test-social-share-links {
+    display: flex;
+  .facebook-share  {
+    display: flex;
+    width:48px;
+    height:48px;
+    background: url("../images/facebook.png");
+  }
+
+  .twitter-share {
+    display: flex;
+    width:48px;
+    height:48px;
+    background: url("../images/twitter.png");
+  }
 }
+
+
+
+}
+
+
+
+
+

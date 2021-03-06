@@ -1,0 +1,10 @@
+<article{{ attributes.addClass(bem_classes) }}>
+  {% block media %}
+    {{ title_suffix.contextual_links }}
+    {% if content %}
+      {% block content %}
+        {{ content }}
+      {% endblock %}
+    {% endif %}
+  {% endblock media %}
+</article>

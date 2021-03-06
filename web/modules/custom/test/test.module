@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Main file for custom hooks and functions.
+ */
+
+
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Component\Utility\Html;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function test_theme($existing, $type, $theme, $path) {
+  return [
+    'test_social_share' => [
+      'variables' => [
+        'url' => NULL,
+        'label' => NULL,
+      ],
+      'file' => 'test.theme.inc',
+    ],
+  ];
+}
+
+
+
+/**
+ * Implements hook_entity_extra_field_info().
+**/
+function test_entity_extra_field_info() {
+  $extra = [];
+
+  $extra['node']['article']['display']['social_share'] = [
+    'label' => t('Links for sharing article'),
+    'weight' => 100,
+    'visible' => FALSE,
+  ];
+
+  return $extra;
+}
+
+function test_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($display->getComponent('social_share')) {
+    $build['social_share'] = [
+      '#theme' => 'test_social_share',
+      '#url' => $node->toUrl('canonical',['absolute' => TRUE])->toString('TRUE')->getGeneratedUrl(),
+      '#label' => $node->label(),
+    ];
+  }
+  /*
+    if ($display->getComponent('related_posts')) {
+      $build['related_posts'] = [
+        '#theme' => 'dlog_blog_related_posts'
+      ];
+    }
+
+    if ($display->getComponent('random_posts')) {
+      $build['random_posts'] = [
+        '#create_placeholder' => TRUE,
+        '#lazy_builder' => [
+          'dlog_blog.lazy_builder:randomBlogPosts', [],
+        ],
+      ];
+    }
+  */
+}
+
+
