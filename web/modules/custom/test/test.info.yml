@@ -1,5 +1,5 @@
-name: Social links
+name: Social links - Custom
 description: Module for creating social links block for entities.
 type: module
 core: 8.x
-package: Social
+package: Custom

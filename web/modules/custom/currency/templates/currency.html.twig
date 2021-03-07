@@ -1,0 +1,19 @@
+{% set class = 'currency' %}
+
+<div class="{{ class }}">
+  <div class="{{ class }}__last-update">
+     {% for key, time in currencies if key == 2 %}
+       Last update: {{ time }}
+     {% endfor %}
+  </div>
+  <div class="{{ class }}__items">
+    {% for key, currency in currencies if key != 1 and key != 2 %}
+    <div class="{{ class }}__item">{{ key }} - {{ currency }}</div>
+    {% endfor %}
+  </div>
+  <div class="{{ class }}__next-update">
+    {% for key, time in currencies if key == 1 %}
+      Next update: {{ time }}
+    {% endfor %}
+  </div>
+</div>

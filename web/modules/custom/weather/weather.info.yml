@@ -1,0 +1,5 @@
+name: Weather - Custom
+description: Module for display weather.
+type: module
+core: 8.x
+package: Custom

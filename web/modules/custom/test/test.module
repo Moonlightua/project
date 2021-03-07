@@ -5,11 +5,11 @@
  * Main file for custom hooks and functions.
  */
 
-
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\node\NodeInterface;
+use Drupal\node\Entity\NodeType;
 
 /**
  * Implements hook_theme().
@@ -28,17 +28,21 @@ function test_theme($existing, $type, $theme, $path) {
 
 
 
+
+
 /**
  * Implements hook_entity_extra_field_info().
 **/
 function test_entity_extra_field_info() {
   $extra = [];
 
-  $extra['node']['article']['display']['social_share'] = [
-    'label' => t('Links for sharing article'),
-    'weight' => 100,
-    'visible' => FALSE,
-  ];
+  foreach (NodeType::loadMultiple() as $bundle) {
+    $extra['node'][$bundle->id()]['display']['social_share'] = [
+      'label' => t('Links for sharing article'),
+      'weight' => 100,
+      'visible' => TRUE,
+    ];
+  }
 
   return $extra;
 }
@@ -51,22 +55,6 @@ function test_node_view(array &$build, NodeInterface $node, EntityViewDisplayInt
       '#label' => $node->label(),
     ];
   }
-  /*
-    if ($display->getComponent('related_posts')) {
-      $build['related_posts'] = [
-        '#theme' => 'dlog_blog_related_posts'
-      ];
-    }
-
-    if ($display->getComponent('random_posts')) {
-      $build['random_posts'] = [
-        '#create_placeholder' => TRUE,
-        '#lazy_builder' => [
-          'dlog_blog.lazy_builder:randomBlogPosts', [],
-        ],
-      ];
-    }
-  */
 }
 
 

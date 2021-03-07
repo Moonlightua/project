@@ -1,0 +1,18 @@
+<div class="report-container">
+  <div class="weather-title">{{ data.name }} Weather Status</div>
+  <div class="time">
+    <div>{{ date }}</div>
+  </div>
+  <div class="weather-description">
+    <div>{{ data.weather[0].description|capitalize }}</div>
+  </div>
+  <div class="weather-forecast">
+    <img src="http://openweathermap.org/img/w/{{ data.weather[0].icon }}.png" class="weather-icon" />
+    <div class="weather-temperature">Temp: {{ data.main.temp }}°C</div>
+    <div class="weather-feels">Feels like: {{ data.main.feels_like }}°C</div>
+  </div>
+  <div class="weather-other">
+    <div>Humidity: {{ data.main.humidity }}%</div>
+    <div>Wind: {{ data.wind.speed }} km/h</div>
+  </div>
+</div>

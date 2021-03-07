@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Main file for custom hooks and functions.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function currency_theme($existing, $type, $theme, $path) {
+  return [
+    'currency' => [
+      'variables' => [
+        'currencies' => NULL,
+
+      ],
+    ],
+  ];
+}
